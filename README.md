@@ -4,4 +4,4 @@
 2. Mở Terminal lên:
 # npm i express
 # npm i nodemon
-
+# npm i mongoose
