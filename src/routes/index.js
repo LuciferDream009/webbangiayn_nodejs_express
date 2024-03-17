@@ -1,7 +1,7 @@
+const customerRouter = require('./CustomerRouter')
+
 const routes = (app) => {
-    app.get('/user', (req, res) => {
-        res.send('User page');
-    })
+    app.use('/api/customer', customerRouter)
 }
 
-module.exports = routes;
+module.exports = routes
