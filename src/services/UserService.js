@@ -68,7 +68,7 @@ const loginUser = (userLogin) => {
                 id:checkUser.id,
                 isAdmin:checkUser.isAdmin
             })
-            console.log('accessToken', accessToken)
+           // console.log('accessToken', accessToken)
             resolve({
                 status: 'OK',
                 message: 'SUCCSESS',
@@ -81,7 +81,34 @@ const loginUser = (userLogin) => {
     })
 }
 
+const updateUser = (id, data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkUser = await User.findOne({
+                _id: id 
+            })
+            console.log('checkUser', checkUser)
+
+            if (!checkUser) {
+                resolve({
+                    status: 'OK',
+                    message: 'the user is not defined'
+                })
+            }
+            const updateUser = await User.findByIdAndUpdate(id, data)
+            console.log('updateUser', updateUser);
+            resolve({
+                status: 'OK',
+                message: 'User updated successfully'
+            });
+
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
 module.exports = {
     createUser,
-    loginUser
+    loginUser, 
+    updateUser
 }
