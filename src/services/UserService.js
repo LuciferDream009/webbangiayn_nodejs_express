@@ -99,7 +99,34 @@ const updateUser = (id, data) => {
             console.log('updateUser', updateUser);
             resolve({
                 status: 'OK',
-                message: 'User updated successfully'
+                message: 'User updated successfully',
+                data: updateUser
+            });
+
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const deleteUSer = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkUser = await User.findOne({
+                _id: id 
+            })
+
+            if (!checkUser) {
+                resolve({
+                    status: 'OK',
+                    message: 'the user is not defined'
+                })
+            }
+            await User.findByIdAndDelete(id)
+            console.log('updateUser', updateUser);
+            resolve({
+                status: 'OK',
+                message: 'Delete user successfully'
             });
 
         } catch (error) {
@@ -110,5 +137,6 @@ const updateUser = (id, data) => {
 module.exports = {
     createUser,
     loginUser, 
-    updateUser
+    updateUser,
+    deleteUSer
 }
