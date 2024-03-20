@@ -134,9 +134,52 @@ const deleteUSer = (id) => {
         }
     })
 }
+
+const getAllUser = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const allUser = await User.find()
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data: allUser
+            });
+
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const getDetailUser = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await User.findOne({
+                _id: id 
+            })
+
+            if (!user) {
+                resolve({
+                    status: 'OK',
+                    message: 'the user is not defined'
+                })
+            }
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data: user
+            });
+
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
 module.exports = {
     createUser,
     loginUser, 
     updateUser,
-    deleteUSer
+    deleteUSer, 
+    getAllUser,
+    getDetailUser
 }
