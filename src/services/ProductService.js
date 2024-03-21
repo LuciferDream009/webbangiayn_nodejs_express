@@ -58,14 +58,19 @@ const updateProduct = (id, data) => {
     })
 }
 
-const getAllProduct = () => {
+const getAllProduct = (limit = 8, page = 0) => {  // phan trang o backend
     return new Promise(async (resolve, reject) => {
         try {
-            const allProduct = await Product.find()
+            const totalProducts = await Product.countDocuments()  // phan trang o backend
+            const totalPages = Math.ceil(totalProducts / limit);  // phan trang o backend
+            const allProduct = await Product.find().limit(limit).skip(page * limit)  // phan trang o backend
             resolve({
                 status: 'OK',
                 message: 'SUCCESS',
-                data: allProduct
+                data: allProduct,
+                totalProducts: totalProducts,  // phan trang o backend
+                pageCurrent: page + 1,  // phan trang o backend
+                totalPage: totalPages  // phan trang o backend
             });
 
         } catch (error) {
