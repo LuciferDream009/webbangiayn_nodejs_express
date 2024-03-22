@@ -76,17 +76,39 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+// const getAllProduct = async (req, res) => {
+//     try {
+//         const { limit, page , sort, filter } = req.query // phan trang o backend
+//         const response = await ProductService.getAllProduct(Number(limit) || 8, Number(page) || 0, sort, filter) //phan trang o backend
+//         return res.status(200).json(response)
+//     } catch (e) {
+//         return res.status(404).json({
+//             message: e
+//         })
+//     }
+// }
+
 const getAllProduct = async (req, res) => {
     try {
-        const { limit, page , sort, filter } = req.query // phan trang o backend
-        const response = await ProductService.getAllProduct(Number(limit) || 8, Number(page) || 0, sort, filter) //phan trang o backend
-        return res.status(200).json(response)
-    } catch (e) {
-        return res.status(404).json({
-            message: e
-        })
+        const { limit = 8, page = 0, sort, filter } = req.query; // Thiết lập giá trị mặc định cho limit và page
+
+        // Kiểm tra tính hợp lệ của limit và page
+        if (isNaN(parseInt(limit)) || isNaN(parseInt(page))) {
+            return res.status(400).json({ message: "Invalid limit or page value" });
+        }
+
+        const response = await ProductService.getAllProduct(Number(limit), Number(page), sort, filter);
+        if (!response || !response.data || response.data.length === 0) {
+            return res.status(200).json({ status: 'OK', message: 'No products found', data: [], totalProducts: 0, pageCurrent: 1, totalPage: 0 });
+        }
+
+        return res.status(200).json(response);
+    } catch (error) {
+        console.error("Error in getAllProduct:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
 
 
 module.exports = {
