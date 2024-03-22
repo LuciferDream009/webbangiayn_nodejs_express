@@ -58,12 +58,39 @@ const updateProduct = (id, data) => {
     })
 }
 
-const getAllProduct = (limit = 8, page = 0) => {  // phan trang o backend
+const getAllProduct = (limit , page , sort, filter) => {  // phan trang o backend
     return new Promise(async (resolve, reject) => {
         try {
-            const totalProducts = await Product.countDocuments()  // phan trang o backend
-            const totalPages = Math.ceil(totalProducts / limit);  // phan trang o backend
-            const allProduct = await Product.find().limit(limit).skip(page * limit)  // phan trang o backend
+            const totalProducts = await Product.countDocuments()  
+            const totalPages = Math.ceil(totalProducts / limit);  
+            if (filter) {
+                const label = filter[0]
+                const allOjectFilter = await Product.find({
+                    [label] : {'$regex' : filter[1]} 
+                }).limit(limit).skip(page * limit)
+                resolve({
+                    status: 'OK',
+                    message: 'SUCCESS',
+                    data: allOjectFilter,
+                    totalProducts: totalProducts,  
+                    pageCurrent: page + 1,  
+                    totalPage: totalPages  
+                });
+            }
+            if(sort){
+                const objectSort = {}
+                objectSort[sort[1]] = sort[0]
+                const allProductSort = await Product.find().limit(limit).skip(page * limit).sort(objectSort)
+                resolve({
+                    status: 'OK',
+                    message: 'SUCCESS',
+                    data: allProductSort,
+                    totalProducts: totalProducts,  
+                    pageCurrent: page + 1,  
+                    totalPage: totalPages  
+                });
+            }
+            const allProduct = await Product.find().limit(limit).skip(page * limit)
             resolve({
                 status: 'OK',
                 message: 'SUCCESS',
