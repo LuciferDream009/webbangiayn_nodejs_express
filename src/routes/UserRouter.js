@@ -4,6 +4,7 @@ const UserController = require('../controllers/UserController');
 const { authMiddleware, authUserMiddleware } = require('../middleware/authMiddleware');
 router.post('/sign-up', UserController.createUser);
 router.post('/sign-in', UserController.loginUser);
+router.post('/log-out', UserController.logoutUser);
 router.put('/update-user/:id', UserController.updateUser);
 router.delete('/delete-user/:id',authMiddleware, UserController.deleteUSer);// admin moi co quyen xoa
 router.get('/getAll',authMiddleware,UserController.getAllUser);// admin moi co quyen getall
