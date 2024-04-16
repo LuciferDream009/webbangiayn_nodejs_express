@@ -111,7 +111,7 @@ const getAllUser = async (req, res) => {
 }
 
 
-const getDetailUser = async (req, res) => {
+const getDetailsUser = async (req, res) => {
     try {
         const userId = req.params.id
         if(!userId){
@@ -120,7 +120,7 @@ const getDetailUser = async (req, res) => {
                 message:'The userID in required'
             })
         }
-        const response = await UserService.getDetailUser(userId);
+        const response = await UserService.getDetailsUser(userId);
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
@@ -151,7 +151,7 @@ const logoutUser = async (req, res) => {
     try {
         res.clearCookie('refresh_token')
         return res.status(200).json({
-            status: 'success',
+            status: 'OK',
             message: 'User logged out'
         })
     } catch (e) {
@@ -161,13 +161,33 @@ const logoutUser = async (req, res) => {
     }
 }
 
+const deleteMany = async (req, res) => {
+    try {
+        const ids = req.body.ids
+        if (!ids) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The ids is required'
+            })
+        }
+        const response = await UserService.deleteManyUser(ids)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+
 module.exports = {
     createUser,
     loginUser,
     updateUser,
     deleteUSer,
     getAllUser,
-    getDetailUser,
+    getDetailsUser,
     refreshToken,
-    logoutUser
+    logoutUser,
+    deleteMany
 }
