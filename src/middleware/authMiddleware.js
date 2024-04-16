@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
                 message: 'the authemtication'
             })
         }
-        const { payload } = user
+       
         if(user?.isAdmin) {
             next()
         }else{
@@ -32,7 +32,6 @@ const authUserMiddleware = (req, res, next) => {
                 message: 'the authemtication'
             })
         }
-        const { payload } = user
         if(user?.isAdmin || user?.id === userId) {
             next()
         }else{

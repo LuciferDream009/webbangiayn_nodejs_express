@@ -95,7 +95,7 @@ const updateUser = (id, data) => {
                     message: 'the user is not defined'
                 })
             }
-            const updateUser = await User.findByIdAndUpdate(id, data)
+            const updateUser = await User.findByIdAndUpdate(id, data,  { new: true })
             console.log('updateUser', updateUser);
             resolve({
                 status: 'OK',
@@ -151,14 +151,14 @@ const getAllUser = () => {
     })
 }
 
-const getDetailUser = (id) => {
+const getDetailsUser = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
             const user = await User.findOne({
                 _id: id 
             })
 
-            if (!user) {
+            if (user === null) {
                 resolve({
                     status: 'OK',
                     message: 'the user is not defined'
@@ -176,6 +176,21 @@ const getDetailUser = (id) => {
     })
 }
 
+const deleteManyUser = (ids) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            await User.deleteMany({ _id: ids })
+            resolve({
+                status: 'OK',
+                message: 'Delete user success',
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 
 module.exports = {
     createUser,
@@ -183,6 +198,7 @@ module.exports = {
     updateUser,
     deleteUSer, 
     getAllUser,
-    getDetailUser
+    getDetailsUser,
+    deleteManyUser
    
 }
